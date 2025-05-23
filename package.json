@@ -4,7 +4,7 @@
   "description": "Node.js app with GitHub Actions, SonarCloud, and GHCR",
   "main": "app.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node src/app.js",
     "test": "echo \"No tests yet\" && exit 0"
   },
   "dependencies": {
