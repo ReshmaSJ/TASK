@@ -35,10 +35,7 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         with:
-          args: >
-      -Dsonar.projectKey=ReshmaSJ_TASK
-      -Dsonar.organization=sonar25
-      -Dsonar.sources=.
+          projectBaseDir: .
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_SCANNER_OPTS: "-Dsonar.qualitygate.wait=true"
