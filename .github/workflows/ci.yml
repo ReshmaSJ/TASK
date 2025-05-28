@@ -64,9 +64,10 @@ jobs:
         uses: azure/login@v1
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
-          cluster-name: AKSCluster1
-          resource-group: resource1
-
+          
+       - name: Get AKS credentials
+          run: az aks get-credentials --resource-group resource1 --name AKSCluster1 --overwrite-existing
+          
       - name: Deploy to AKS
         run: |
          
