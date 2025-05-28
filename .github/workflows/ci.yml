@@ -54,3 +54,23 @@ jobs:
       - name: Push Docker image
         run: |
           docker push ghcr.io/reshmasj/task:latest
+
+      - name: Set up Kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Set up Azure AKS credentials
+        uses: azure/aks-set-context@v3
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          cluster-name: AKSCluster1
+          resource-group: resource1
+
+      - name: Deploy to AKS
+        run: |
+          kubectl create namespace dev --dry-run=client -o yaml | kubectl apply -f -
+          kubectl apply -f k8s/deployment.yaml -n dev
+          kubectl apply -f k8s/service.yaml -n dev
+
+
