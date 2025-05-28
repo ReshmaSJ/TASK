@@ -65,8 +65,8 @@ jobs:
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
           
-       - name: Get AKS credentials
-          run: az aks get-credentials --resource-group resource1 --name AKSCluster1 --overwrite-existing
+      - name: Get AKS credentials
+        run: az aks get-credentials --resource-group resource1 --name AKSCluster1 --overwrite-existing
           
       - name: Deploy to AKS
         run: |
