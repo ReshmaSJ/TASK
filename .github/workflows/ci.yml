@@ -69,7 +69,7 @@ jobs:
 
       - name: Deploy to AKS
         run: |
-          kubectl create namespace dev --dry-run=client -o yaml | kubectl apply -f -
+         
           kubectl apply -f k8s/deployment.yaml -n dev
           kubectl apply -f k8s/service.yaml -n dev
 
