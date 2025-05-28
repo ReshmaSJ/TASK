@@ -60,8 +60,8 @@ jobs:
         with:
           version: 'latest'
 
-      - name: Set up Azure AKS credentials
-        uses: azure/aks-set-context@v3
+      - name: Login to Azure AKS
+        uses: azure/login@v1
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
           cluster-name: AKSCluster1
