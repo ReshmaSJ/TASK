@@ -1,0 +1,38 @@
+name: Promote to Environment
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to promote to (qa, uat, prod)'
+        required: true
+        default: 'qa'
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.event.inputs.environment }}
+      url: https://your-app-url.com/${{ github.event.inputs.environment }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set environment
+        run: echo "Promoting to ${{ github.event.inputs.environment }} environment"
+
+      - name: Pull artifact from GitHub Package Registry
+        run: |
+          echo "Pulling image from GHCR..."
+          docker pull ghcr.io/${{ github.repository_owner }}/nodejs-app:latest
+
+      - name: Tag and Push to Environment
+        run: |
+          docker tag ghcr.io/${{ github.repository_owner }}/nodejs-app:latest ghcr.io/${{ github.repository_owner }}/nodejs-app:${{ github.event.inputs.environment }}
+          docker push ghcr.io/${{ github.repository_owner }}/nodejs-app:${{ github.event.inputs.environment }}
+
+      - name: Deploy to Kubernetes
+        run: |
+          echo "Deploying to Kubernetes ${{ github.event.inputs.environment }} namespace"
+          # Example: kubectl apply -f k8/${{ github.event.inputs.environment }}-deployment.yaml
