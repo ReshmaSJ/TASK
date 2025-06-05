@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [main]
 
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
 jobs:
   build-test-sonar-docker-deploy:
     name: Build, SonarCloud Scan, and Push to GHCR and deploy
