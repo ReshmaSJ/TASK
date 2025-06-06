@@ -73,6 +73,6 @@ jobs:
          
           kubectl apply -f k8/deployment.yaml -n dev
           kubectl apply -f k8/service.yaml -n dev 
-          kubectl apply -f k8/deployment.yaml -n dev
+         
 
 
