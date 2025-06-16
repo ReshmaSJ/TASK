@@ -47,13 +47,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set image tag
+        run: echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_ENV
+        
+
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/reshmasj/task:latest .
+          docker build -t ghcr.io/reshmasj/task:${{ env.IMAGE_TAG }} .
 
       - name: Push Docker image
         run: |
-          docker push ghcr.io/reshmasj/task:latest
+          docker push ghcr.io/reshmasj/task:${{ env.IMAGE_TAG }} 
 
       - name: Set up Kubectl
         uses: azure/setup-kubectl@v3
