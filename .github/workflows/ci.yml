@@ -8,7 +8,7 @@ on:
     
 jobs:
   build-test-sonar-docker-deploy:
-    name: Build, SonarCloud Scan, and Push to GHCR and Deploy
+    name: Build, SonarCloud Scan, and Push to GHCR and deploy
     runs-on: ubuntu-latest
 
     permissions:
