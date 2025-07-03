@@ -4,35 +4,48 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Environment to promote to (qa, uat, prod)'
+        description: "Target environment (dev, qa, uat, prod)"
         required: true
-        default: 'qa'
+        type: choice
+        options:
+          - dev
+          - qa
+          - uat
+          - prod
+      image_tag:
+        description: "Docker image tag to deploy (e.g., v1.0.0)"
+        required: true
+        type: string
 
 jobs:
-  promote:
+  deploy:
+    name: Deploy to ${{ github.event.inputs.environment }}
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.event.inputs.environment }}
-      url: https://your-app-url.com/${{ github.event.inputs.environment }}
+      # Requires protection rule for manual approval (set in GitHub UI)
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set environment
-        run: echo "Promoting to ${{ github.event.inputs.environment }} environment"
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Pull artifact from GitHub Package Registry
-        run: |
-          echo "Pulling image from GHCR..."
-          docker pull ghcr.io/reshmasj/task:${{ env.IMAGE_TAG }} 
+      - name: Set AKS context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ secrets.AZURE_RG }}
+          cluster-name: ${{ secrets.AKS_CLUSTER }}
+          use-kubelogin: false
 
-      - name: Tag and Push to Environment
-        run: |
-          docker tag ghcr.io/reshmasj/task:${{ env.IMAGE_TAG }}  ghcr.io/${{ github.repository_owner }}/nodejs-app:${{ github.event.inputs.environment }}
-          docker push ghcr.io/${{ github.repository_owner }}/nodejs-app:${{ github.event.inputs.environment }}
+      - name: Set environment namespace
+        run: echo "ENV_NAMESPACE=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
 
-      - name: Deploy to Kubernetes
+      - name: Deploy to AKS
         run: |
-          echo "Deploying to Kubernetes ${{ github.event.inputs.environment }} namespace"
-          # Example: kubectl apply -f k8/${{ github.event.inputs.environment }}-deployment.yaml
+          kubectl set image deployment/nodejs-app nodejs-app ghcr.io/reshmasj/task:${{ env.IMAGE_TAG }} -n $ENV_NAMESPACE
+
+          kubectl rollout status deployment/nodejs-app -n $ENV_NAMESPACE
