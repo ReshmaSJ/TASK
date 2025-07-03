@@ -12,11 +12,7 @@ on:
           - qa
           - uat
           - prod
-      image_tag:
-        description: "Docker image tag to deploy (e.g., v1.0.0)"
-        required: true
-        type: string
-
+    
 jobs:
   deploy:
     name: Deploy to ${{ github.event.inputs.environment }}
