@@ -25,17 +25,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Azure Login
+    
+      - name: Set up Kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Login to Azure AKS
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Set AKS context
-        uses: azure/aks-set-context@v3
-        with:
-          resource-group: ${{ secrets.AZURE_RG }}
-          cluster-name: ${{ secrets.AKS_CLUSTER }}
-          use-kubelogin: false
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          
+      - name: Get AKS credentials
+        run: az aks get-credentials --resource-group myResourceGroup --name myAKSCluster --overwrite-existing
 
       - name: Set environment namespace
         run: echo "ENV_NAMESPACE=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
