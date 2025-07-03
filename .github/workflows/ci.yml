@@ -75,7 +75,7 @@ jobs:
       - name: Deploy to AKS
         run: |
          
-          kubectl set image deployment/nodejs-app task-container=ghcr.io/reshmasj/task:${{ env.IMAGE_TAG }} -n dev
+          kubectl set image deployment/nodejs-app nodejs-app=ghcr.io/reshmasj/task:${{ env.IMAGE_TAG }} -n dev
           kubectl apply -f k8/service.yaml -n dev 
          
 
