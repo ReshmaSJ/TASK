@@ -47,5 +47,5 @@ jobs:
 
       - name: Deploy to AKS
         run: |
-          kubectl set image deployment/nodejs-app nodejs-app ghcr.io/reshmasj/task:${{ env.IMAGE_TAG }} -n $ENV_NAMESPACE
+          kubectl set image deployment/nodejs-app nodejs-app=ghcr.io/reshmasj/task:${{ env.IMAGE_TAG }} -n $ENV_NAMESPACE
           kubectl rollout status deployment/nodejs-app -n $ENV_NAMESPACE
