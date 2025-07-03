@@ -41,6 +41,9 @@ jobs:
 
       - name: Set environment namespace
         run: echo "ENV_NAMESPACE=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+      - name: Set image tag
+        run: echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_ENV
+        
 
       - name: Deploy to AKS
         run: |
