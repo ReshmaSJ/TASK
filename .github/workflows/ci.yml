@@ -5,6 +5,19 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment (dev, qa, uat, prod)"
+        required: true
+        type: choice
+        options:
+          - dev
+          - qa
+          - uat
+          - prod
     
 jobs:
   build-test-sonar-docker-deploy:
