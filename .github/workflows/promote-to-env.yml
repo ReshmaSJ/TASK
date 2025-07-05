@@ -48,8 +48,8 @@ jobs:
       - name: Deploy to AKS
         run: |
           envsubst < k8/deployment.yaml | kubectl apply -n $ENV_NAMESPACE -f -
-
-          kubectl apply -f k8/service.yaml -n $ENV_NAMESPACE
+          envsubst < k8/deployment.yaml | kubectl apply -n $ENV_NAMESPACE -f -
+     
           kubectl rollout status deployment/nodejs-app -n $ENV_NAMESPACE
           sleep 5
           kubectl set image deployment/nodejs-app nodejs-app=ghcr.io/reshmasj/task:$IMAGE_TAG -n $ENV_NAMESPACE   
