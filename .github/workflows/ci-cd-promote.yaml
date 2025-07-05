@@ -103,16 +103,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      #- name: Validate image_tag input
-        #run: |
-          #if [ -z "${{ github.event.inputs.image_tag }}" ]; then
-            #echo "ERROR: image_tag input is required for non-dev environments."
-            #exit 1
-          #fi
+      - name: Validate image_tag input
+        run: |
+          if [ -z "${{ github.event.inputs.image_tag }}" ]; then
+            echo "ERROR: image_tag input is required for non-dev environments."
+            exit 1
+          fi
 
       - name: Set IMAGE_TAG
-        #run: echo "IMAGE_TAG=${{ github.event.inputs.image_tag }}" >> $GITHUB_ENV
-        run: echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_ENV
+        run: echo "IMAGE_TAG=${{ github.event.inputs.image_tag }}" >> $GITHUB_ENV
+        #run: echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_ENV
 
       - name: Set ENV_NAMESPACE
         run: echo "ENV_NAMESPACE=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
