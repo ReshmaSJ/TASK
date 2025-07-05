@@ -12,9 +12,7 @@ on:
           - qa
           - uat
           - prod
-      image_tag:
-        description: "Image tag to deploy (required for qa/uat/prod)"
-        required: false
+      
 
 jobs:
   build-test-sonar-docker-deploy:
