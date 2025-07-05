@@ -1,17 +1,10 @@
 name: CI Pipeline
 
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: "Target environment (dev, qa, uat, prod)"
-        required: true
-        type: choice
-        options:
-          - dev
-          - qa
-          - uat
-          - prod
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
     
 jobs:
   build-test-sonar-docker-deploy:
