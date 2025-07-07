@@ -12,6 +12,7 @@ on:
           - qa
           - uat
           - prod
+          - monitoring
       image_tag:
         description: "Image tag to deploy (required for qa/uat/prod)"
         required: false
